@@ -1,108 +1,122 @@
-# 📸 EdgeIQ Screenshot API
+# Screenshot API
 
-**URL-to-screenshot API powered by Playwright — accurate, full-featured captures.**
+> URL → Screenshot. No browser required.
 
-Give it a URL, get back a PNG or JPEG screenshot. Built on Playwright's Chromium rendering engine for accurate, JavaScript-aware captures.
+Capture high-quality PNG/JPEG screenshots of any URL using Playwright's Chromium engine. Works as a standalone CLI tool or reference client for the hosted API.
 
-[![Project Stage](https://img.shields.io/badge/Stage-Beta-blue)](https://edgeiqlabs.com)
-[![Python](https://img.shields.io/badge/Python-3.8+-green)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-orange)](LICENSE)
-
----
-
-## What It Does
-
-Captures screenshots of any URL using Playwright's Chromium engine. Supports custom viewport dimensions, full-page captures, JavaScript wait selectors, and multiple output formats.
-
----
-
-## Key Features
-
-- **Playwright/Chromium rendering** — accurate, JS-aware captures
-- **Custom dimensions** — any width/height combination
-- **Full-page capture** — scroll and capture entire page (Pro)
-- **wait_for selector** — wait for DOM element before capturing (Pro)
-- **PNG/JPEG output** — flexible format options
-- **Batch capture** — screenshot multiple URLs from a list
-
----
-
-## Prerequisites
-
-- Python 3.8+
-- `playwright`, `pillow`
-- Chromium browser installed (`playwright install chromium`)
-
----
-
-## Installation
-
-```bash
-git clone https://github.com/snipercat69/edgeiq-screenshot-api.git
-cd edgeiq-screenshot-api
-pip install -r requirements.txt
-playwright install chromium
-```
+![Screenshot API](https://img.shields.io/badge/version-1.0.0-blue) ![Python](https://img.shields.io/badge/python-3.8+-green) ![Playwright](https://img.shields.io/badge/playwright-chromium-yellow)
 
 ---
 
 ## Quick Start
 
+### 1. Install Dependencies
+
 ```bash
-# Capture a screenshot
+pip install playwright
+playwright install chromium
+```
+
+### 2. Generate an API Key
+
+```bash
+python3 screenshot_api.py --generate-key
+# ✅ New API key generated: snap_xxxxxxxxxxxx
+#   Add this to your code: --api-key snap_xxxxxxxxxxxx
+#   Keys stored at: ~/.screenshot_api/keys.json
+```
+
+### 3. Capture a Screenshot
+
+```bash
 python3 screenshot_api.py --url "https://example.com" --output screenshot.png
+# Capturing screenshot of https://example.com ...
+# ✅ Screenshot saved to /tmp/screenshot_20260331_143052.png
+#    Usage: 1/100 this month (free tier)
+```
 
-# Custom dimensions
-python3 screenshot_api.py --url "https://example.com" --width 1920 --height 1080 --output screenshot.png
+---
 
-# Full page
+## Examples
+
+```bash
+# JPEG output
+python3 screenshot_api.py --url "https://example.com" --format jpeg --output shot.jpg
+
+# Full-page capture (Pro required)
 python3 screenshot_api.py --url "https://example.com" --full-page --output full.png
 
-# Batch from URL list
-python3 screenshot_api.py --input urls.txt --output-dir ./screenshots
+# Custom viewport (Pro required)
+python3 screenshot_api.py --url "https://example.com" --width 1920 --height 1080 --output 1080p.png
+
+# Wait for element to load before shooting (Pro required)
+python3 screenshot_api.py --url "https://example.com" --wait-for "#main-content" --output waited.png
+
+# With API key for usage tracking
+python3 screenshot_api.py --url "https://example.com" --output shot.png --api-key snap_xxxxxxxxxxxx
 ```
 
 ---
 
-## API Reference (Production Server)
+## API Key Management
 
 ```bash
-POST /v1/screenshot
-Authorization: Bearer <api_key>
-Content-Type: application/json
+# List all keys and monthly usage
+python3 screenshot_api.py --list-keys
 
-{
-  "url": "https://example.com",
-  "width": 1280,
-  "height": 720,
-  "format": "png",
-  "full_page": false,
-  "wait_for": null
-}
+# Associate email with a key
+python3 screenshot_api.py --api-key snap_xxxxxxxxxxxx --set-email "you@example.com"
 ```
 
 ---
 
-## Pricing
+## Tiers
 
-| Tier | Price | Features |
-|------|-------|----------|
-| **Free** | $0 | 100 screenshots/month, fixed dimensions |
-| **Pro** | $19/mo | 2000 screenshots/month, any dimensions, full-page, wait_for |
+| Feature | Free | Pro ($19/mo) |
+|---------|------|-------------|
+| Screenshots/mo | 100 | 2000 |
+| PNG output | ✅ | ✅ |
+| JPEG output | ✅ | ✅ |
+| Fixed dimensions | ✅ (1280×720, 1920×1080) | ✅ (any) |
+| Full-page capture | ❌ | ✅ |
+| wait_for selector | ❌ | ✅ |
 
----
-
-## Integration with EdgeIQ Tools
-
-- **[EdgeIQ Phishing Kit Detector](https://github.com/snipercat69/edgeiq-phishing-kit-detector)** — capture suspicious pages for analysis
-- **[EdgeIQ Client Dashboard](https://github.com/snipercat69/edgeiq-client-dashboard)** — generate visual reports for clients
-
----
-
-## Support
-
-Open an issue at: https://github.com/snipercat69/edgeiq-screenshot-api/issues
+**Upgrade:** https://buy.stripe.com/cNi00lgKv6d76w46sw7wA0t
 
 ---
 
-*Part of EdgeIQ Labs — [edgeiqlabs.com](https://edgeiqlabs.com)*
+## Output
+
+A screenshot file saved to the path you specified:
+
+```
+/tmp/screenshot_20260331_143052.png  (or .jpg for JPEG)
+```
+
+File size depends on page complexity — a typical landing page is ~200–800 KB as PNG.
+
+---
+
+## Requirements
+
+- Python 3.8+
+- `playwright` pip package
+- `chromium` browser (installed via `playwright install chromium`)
+
+---
+
+## File Structure
+
+```
+screenshot-api/
+├── SKILL.md              # Full skill documentation
+├── README.md             # This file
+├── screenshot_api.py     # CLI tool + reference client
+└── edgeiq_licensing.py   # License tier checking (shared module)
+```
+
+---
+
+## License
+
+This tool is provided as-is. API access subject to Stripe terms.
